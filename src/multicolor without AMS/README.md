@@ -1,5 +1,5 @@
 # 🚀 Multicolor without AMS
-If you don't have an AMS, you can use [this gcode](https://github.com/robinAZERTY/BambuLab-A1-Mini-unofficial-profiles/blob/main/src/multicolor%20without%20AMS/change%20fillement.gcode). Then you can use the slicer as if you had an AMS. The only difference is that you will have to change the filament manually...!
+If you don't have an AMS, you can use [this gcode](change%20fillement.gcode). Then you can use the slicer as if you had an AMS. The only difference is that you will have to change the filament manually...!
 
 ## 📝 Steps
 When a color change is needed, the printer will pause at the right moment. Once paused, you can follow these steps:
@@ -10,4 +10,4 @@ When a color change is needed, the printer will pause at the right moment. Once 
 It will purge the nozzle following the flush volume and filament settings in the slicer.
 
 ## 📬 Contact
-I took [this gcode](https://github.com/robinAZERTY/BambuLab-A1-Mini-unofficial-profiles/blob/main/src/multicolor%20without%20AMS/change%20fillement.gcode) from an other github repository. I don't remember which one, but if you recognize it, please let me know so I can credit the author. 
+I took [this gcode](change%20fillement.gcode) from an other github repository. I don't remember which one, but if you recognize it, please let me know so I can credit the author. 
