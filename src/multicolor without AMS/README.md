@@ -9,5 +9,5 @@ When a color change is needed, the printer will pause at the right moment. Once 
 
 It will purge the nozzle following the flush volume and filament settings in the slicer.
 
-📬 Contact
+## 📬 Contact
 I took [this gcode](filamentChange.gcode) from an other github repository. I don't remember which one, but if you recognize it, please let me know so I can credit the author. 
