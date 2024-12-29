@@ -1,6 +1,6 @@
 # 🚀 BambuLab-A1-Mini-unofficial-profile
 Some tips I personally use for a better experience.
-I love my A1 mini, but there are a few things I would like to share for a better experience.
+I love my A1 mini, but there are a few things I would like to share.
 
 ## ✅ Objectives
 The first objective I would like to achieve is to improve the starting process by reducing the noise and the time it takes.
