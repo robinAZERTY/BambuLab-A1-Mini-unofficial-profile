@@ -1,5 +1,5 @@
 # 🚀 BambuLab-A1-Mini-unofficial-profile
-Some tips I personally use for a better experience of my A1 mini.
+Some tips I personally use for a better experience.
 I love my A1 mini, but there are a few things I would like to share for a better experience.
 
 ## ✅ Objectives
