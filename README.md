@@ -7,8 +7,9 @@ The first objective I would like to achieve is to improve the starting process b
 In addition, I would like to show that you can print multiple colors without AMS, by manually changing the filament during the print.
 
 ## 📦 Materials
-- A1 Mini without AMS, with some minor accessories prints.
-![hardware_view_1](doc/hardware%20view%201.jpg)
+- A1 Mini without AMS, with some minor accessories prints :
+<img src="doc/hardware%20view%201.jpg" alt="hardware_view_1" width="400"/>
+
 - BambuStudio
 
 ## 📝 Steps
