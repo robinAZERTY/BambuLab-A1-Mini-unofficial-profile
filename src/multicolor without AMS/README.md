@@ -15,4 +15,4 @@ When a color change is needed, the printer will pause at the right moment. Once 
 It will purge the nozzle following the flush volume and filament settings in the slicer.
 
 ## 📬 Contact
-I took [this gcode](change%20fillement.gcode) from an other github repository. I don't remember which one, but if you recognize it, please let me know so I can credit the author. 
+I took [this gcode](change%20fillement.gcode) from [pakonambawan](https://github.com/pakonambawan) [there](https://github.com/eukatree/Bambu_CustomGCode/issues/10#issuecomment-2263087821). 
