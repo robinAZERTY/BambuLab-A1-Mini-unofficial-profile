@@ -8,6 +8,84 @@ M1002 gcode_claim_action : 13
 M982.2 S1 ; turn on cog noise reduction
 M975 S1 ; turn on vibration supression
 G28 T170;home
+
+;===== wipe nozzle ===============================
+M1002 gcode_claim_action : 14
+M975 S1
+
+M211 S; push soft endstop status
+M211 X0 Y0 Z0 ;turn off Z axis endstop
+
+M83
+G1 E-1 F500
+G90
+M83
+
+G0 X90 Y-4 F10000
+G380 S3 Z-5 F400
+G1 Z2 F400
+G1 X91 F3000
+G380 S3 Z-5 F400
+G1 Z2 F400
+G1 X92 F3000
+G380 S3 Z-5 F400
+G1 Z2 F400
+G1 X93 F3000
+G380 S3 Z-5 F400
+G1 Z2 F400
+G1 X94 F3000
+G380 S3 Z-5 F400
+G1 Z2 F400
+G1 X95 F3000
+G380 S3 Z-5 F400
+G1 Z2 F400
+G1 X96 F3000
+G380 S3 Z-5 F400
+G1 Z2 F400
+G1 X97 F3000
+G380 S3 Z-5 F400
+G1 Z2 F400
+G1 X98 F3000
+G380 S3 Z-5 F400
+G1 Z2 F400
+G1 X99 F3000
+G380 S3 Z-5 F400
+G1 Z2 F400
+G1 X99 F3000
+G380 S3 Z-5 F400
+G1 Z2 F400
+G1 X99 F3000
+G380 S3 Z-5 F400
+G1 Z2 F400
+G1 X99 F3000
+G380 S3 Z-5 F400
+G1 Z2 F400
+G1 X99 F3000
+G380 S3 Z-5 F400
+
+G1 Z5 F10000
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+G1 X25 Y175 F3000.1 ;Brush material
+G1 Z0.2 F3000.1
+G1 Y185
+G91
+G1 X-30 F3000
+G1 Y-2
+G1 X27
+G1 Y1.5
+G1 X-28
+G1 Y-2
+G1 X30
+G1 Y1.5
+G1 X-30
+G90
+M83
+
+M211 R; pop softend status
+
+G0 X90 Y90 F3000
+G28 Z P0 T170; home z
+
 M1002 gcode_claim_action : 2
 M190 S[bed_temperature_initial_layer_single];wait for bed temp
 M1002 gcode_claim_action : 0
