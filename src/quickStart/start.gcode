@@ -3,11 +3,10 @@
 M1002 gcode_claim_action : 2
 M104 S170;begin nozzle preheat
 M140 S[bed_temperature_initial_layer_single];set bed temp
-M109 S170;wait until nozzle preheat
 M1002 gcode_claim_action : 13
 M982.2 S1 ; turn on cog noise reduction
 M975 S1 ; turn on vibration supression
-G28 T170;home
+G28 T300;home
 
 ;===== wipe nozzle ===============================
 M1002 gcode_claim_action : 14
@@ -83,8 +82,6 @@ M83
 
 M211 R; pop softend status
 
-G0 X90 Y90 F3000
-G28 Z P0 T170; home z
 
 M1002 gcode_claim_action : 2
 M190 S[bed_temperature_initial_layer_single];wait for bed temp
@@ -103,8 +100,15 @@ G0 X103 E.3742  F{outer_wall_volumetric_speed/(0.3*0.5)/4     * 60}
 G0 X108 E.3742  F{outer_wall_volumetric_speed/(0.3*0.5)     * 60}
 G0 X113 E.3742  F{outer_wall_volumetric_speed/(0.3*0.5)/4     * 60}
 G0 X115 Z0 F20000
+G1 E-2 F800 ; Retraction
 G0 Z5
 M400
+
+
+G0 X90 Y90 F3000
+G28 Z P0 T300; home z
+G1 E2 F500 ; Undo retraction
+
 ;========turn off light and wait extrude temperature =============
 M1002 gcode_claim_action : 0
 M400 ; wait all motion done before implement the emprical L parameters
