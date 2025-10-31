@@ -64,7 +64,16 @@ G380 S3 Z-5 F400
 
 G1 Z5 F10000
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+G1 X0 Y175 F18000
+G1 X-13.5 F9000
+M1002 gcode_claim_action : 2
+M190 S[bed_temperature_initial_layer_single];wait for bed temp
+M1002 gcode_claim_action : 0
+M109 S[nozzle_temperature_initial_layer];wait for nozzle temp
+
 G1 X25 Y175 F3000.1 ;Brush material
+
 G1 Z0.2 F3000.1
 G1 Y185
 G91
@@ -83,10 +92,11 @@ M83
 M211 R; pop softend status
 
 
-M1002 gcode_claim_action : 2
-M190 S[bed_temperature_initial_layer_single];wait for bed temp
-M1002 gcode_claim_action : 0
-M109 S[nozzle_temperature_initial_layer];wait for nozzle temp
+
+
+G0 X90 Y90 F3000
+G28 Z P0 T300; home z
+G1 E2 F500 ; Undo retraction
 
 
 G90
@@ -105,9 +115,7 @@ G0 Z5
 M400
 
 
-G0 X90 Y90 F3000
-G28 Z P0 T300; home z
-G1 E2 F500 ; Undo retraction
+
 
 ;========turn off light and wait extrude temperature =============
 M1002 gcode_claim_action : 0
