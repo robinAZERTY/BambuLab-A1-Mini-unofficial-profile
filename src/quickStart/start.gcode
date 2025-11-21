@@ -96,13 +96,13 @@ M211 R; pop softend status
 
 G0 X90 Y90 F3000
 G28 Z P0 T300; home z
-G1 E2 F500 ; Undo retraction
+;G1 E2 F500 ; Undo retraction
 
 
 G90
 M83
-G0 X68 Y-2.5 F30000
 G0 Z0.2 F18000 ;Move to start position
+G1 E1 F500
 G0 X88 E10  F{outer_wall_volumetric_speed/(24/20)    * 60}
 G0 X93 E.3742  F{outer_wall_volumetric_speed/(0.3*0.5)/4     * 60}
 G0 X98 E.3742  F{outer_wall_volumetric_speed/(0.3*0.5)     * 60}
@@ -110,7 +110,6 @@ G0 X103 E.3742  F{outer_wall_volumetric_speed/(0.3*0.5)/4     * 60}
 G0 X108 E.3742  F{outer_wall_volumetric_speed/(0.3*0.5)     * 60}
 G0 X113 E.3742  F{outer_wall_volumetric_speed/(0.3*0.5)/4     * 60}
 G0 X115 Z0 F20000
-G1 E-2 F800 ; Retraction
 G0 Z5
 M400
 

@@ -2,7 +2,7 @@
 ;===== date: 20240518 =======================
 G392 S0
 M204 S9000
-{if toolchange_count > 1}
+{if toolchange_count > 0}
 G17
 G2 Z{max_layer_z + 0.4} I0.86 J0.86 P1 F10000 ; spiral lift a little from second lift
 G1 Z{max_layer_z + 3.0} F1200
@@ -17,11 +17,11 @@ M104 S[old_filament_temp]
 G1 X180 F18000
 G1 X197 F500
 G1 X180 F500
-M620.1 E F[old_filament_e_feedrate] T{nozzle_temperature_range_high[previous_extruder]}
-M620.10 A0 F[old_filament_e_feedrate]
-T[next_extruder]
-M620.1 E F[new_filament_e_feedrate] T{nozzle_temperature_range_high[next_extruder]}
-M620.10 A1 F[new_filament_e_feedrate] L[flush_length] H[nozzle_diameter] T[nozzle_temperature_range_high]
+
+M104 S[nozzle_temperature_range_high[previous_extruder]]
+G1 E-23.7 F200 ; retract old filament
+M104 S[nozzle_temperature_range_high[next_extruder]]
+
 
 G1 X0 Y90 F18000
 G1 X-13.5 F9000
@@ -35,6 +35,10 @@ M400 U1
 ; unload the current filamant
 ; load the next filament by pushing into the PTFE tube until the endstop
 ; press resume
+
+
+G1 E20 F200 ; Undo retraction
+
 
 {if next_extruder < 255}
 M400
@@ -194,7 +198,7 @@ G1 X[x_after_toolchange] Y[y_after_toolchange] Z[z_after_toolchange] F12000
 {endif}
 
 {endif}
-M620 S[next_extruder]A
-T[next_extruder]
-M621 S[next_extruder]A
+;M620 S[next_extruder]A
+;T[next_extruder]
+;M621 S[next_extruder]A
 G392 S1
