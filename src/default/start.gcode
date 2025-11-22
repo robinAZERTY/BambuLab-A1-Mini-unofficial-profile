@@ -1,5 +1,5 @@
 ;===== machine: A1 mini =========================
-;===== date: 20240204 =====================
+;===== date: 20250822 ==================
 
 ;===== start to heat heatbead&hotend==========
 M1002 gcode_claim_action : 2
@@ -85,20 +85,20 @@ M620 S[initial_no_support_extruder]A   ; switch material if AMS exist
     T[initial_no_support_extruder]
     G1 X-13.5 F3000
     M400
-    M620.1 E F{filament_max_volumetric_speed[initial_no_support_extruder]/2.4053*60} T{nozzle_temperature_range_high[initial_no_support_extruder]}
+    M620.1 E F{flush_volumetric_speeds[initial_no_support_extruder]/2.4053*60} T{flush_temperatures[initial_no_support_extruder]}
     M109 S250 ;set nozzle to common flush temp
     M106 P1 S0
     G92 E0
     G1 E50 F200
     M400
     M1002 set_filament_type:{filament_type[initial_no_support_extruder]}
-    M104 S{nozzle_temperature_range_high[initial_no_support_extruder]}
+    M104 S{flush_temperatures[initial_no_support_extruder]}
     G92 E0
-    G1 E50 F{filament_max_volumetric_speed[initial_no_support_extruder]/2.4053*60}
+    G1 E50 F{flush_volumetric_speeds[initial_no_support_extruder]/2.4053*60}
     M400
     M106 P1 S178
     G92 E0
-    G1 E5 F{filament_max_volumetric_speed[initial_no_support_extruder]/2.4053*60}
+    G1 E5 F{flush_volumetric_speeds[initial_no_support_extruder]/2.4053*60}
     M109 S{nozzle_temperature_initial_layer[initial_no_support_extruder]-20} ; drop nozzle temp, make filament shink a bit
     M104 S{nozzle_temperature_initial_layer[initial_no_support_extruder]-40}
     G92 E0
@@ -400,7 +400,7 @@ M622 J1
     
     G1 X-13.5 F3000
     M400
-    M984 A0.1 E1 S1 F{outer_wall_volumetric_speed/2.4}
+    M984 A0.1 E1 S1 F{outer_wall_volumetric_speed/2.4} H[nozzle_diameter]
     M106 P1 S178
     M400 S7
     G1 X0 F18000
@@ -454,3 +454,6 @@ T1000
 
 M211 X0 Y0 Z0 ;turn off soft endstop
 M1007 S1
+
+
+

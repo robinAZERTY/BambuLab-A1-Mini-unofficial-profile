@@ -1,13 +1,8 @@
-;===== machine: A1 mini =========================
-;===== date: 20240618 =======================
+;===== A1mini 20251031 =====
 G392 S0
 M1007 S0
 M620 S[next_extruder]A
 M204 S9000
-{if toolchange_count > 1}
-G17
-G2 Z{max_layer_z + 0.4} I0.86 J0.86 P1 F10000 ; spiral lift a little from second lift
-{endif}
 G1 Z{max_layer_z + 3.0} F1200
 
 M400
@@ -18,17 +13,36 @@ M104 S[old_filament_temp]
 {endif}
 
 G1 X180 F18000
-M620.1 E F[old_filament_e_feedrate] T{nozzle_temperature_range_high[previous_extruder]}
-M620.10 A0 F[old_filament_e_feedrate]
+
+{if long_retractions_when_cut[previous_extruder]}
+M620.11 S1 I[previous_extruder] E-{retraction_distances_when_cut[previous_extruder]} F1200
+{else}
+M620.11 S0
+{endif}
+M400
+
+M620.1 E F{flush_volumetric_speeds[previous_extruder]/2.4053*60} T{flush_temperatures[previous_extruder]}
+M620.10 A0 F{flush_volumetric_speeds[previous_extruder]/2.4053*60}
 T[next_extruder]
-M620.1 E F[new_filament_e_feedrate] T{nozzle_temperature_range_high[next_extruder]}
-M620.10 A1 F[new_filament_e_feedrate] L[flush_length] H[nozzle_diameter] T[nozzle_temperature_range_high]
+M620.1 E F{flush_volumetric_speeds[next_extruder]/2.4053*60} T{flush_temperatures[next_extruder]}
+M620.10 A1 F{flush_volumetric_speeds[next_extruder]/2.4053*60} L[flush_length] H[nozzle_diameter] T{flush_temperatures[next_extruder]}
 
 G1 Y90 F9000
 
 {if next_extruder < 255}
-M400
 
+{if long_retractions_when_cut[previous_extruder]}
+M620.11 S1 I[previous_extruder] E{retraction_distances_when_cut[previous_extruder]} F{flush_volumetric_speeds[previous_extruder]/2.4053*60}
+M628 S1
+G92 E0
+G1 E{retraction_distances_when_cut[previous_extruder]} F{flush_volumetric_speeds[previous_extruder]/2.4053*60}
+M400
+M629 S1
+{else}
+M620.11 S0
+{endif}
+
+M400
 G92 E0
 M628 S0
 
@@ -37,20 +51,20 @@ M628 S0
 ; always use highest temperature to flush
 M400
 M1002 set_filament_type:UNKNOWN
-M109 S[nozzle_temperature_range_high]
+M109 S[flush_temperatures[next_extruder]]
 M106 P1 S60
 {if flush_length_1 > 23.7}
-G1 E23.7 F{old_filament_e_feedrate} ; do not need pulsatile flushing for start part
+G1 E23.7 F{flush_volumetric_speeds[previous_extruder]/2.4053*60} ; do not need pulsatile flushing for start part
 G1 E{(flush_length_1 - 23.7) * 0.02} F50
-G1 E{(flush_length_1 - 23.7) * 0.23} F{old_filament_e_feedrate}
+G1 E{(flush_length_1 - 23.7) * 0.23} F{flush_volumetric_speeds[previous_extruder]/2.4053*60}
 G1 E{(flush_length_1 - 23.7) * 0.02} F50
-G1 E{(flush_length_1 - 23.7) * 0.23} F{new_filament_e_feedrate}
+G1 E{(flush_length_1 - 23.7) * 0.23} F{flush_volumetric_speeds[next_extruder]/2.4053*60}
 G1 E{(flush_length_1 - 23.7) * 0.02} F50
-G1 E{(flush_length_1 - 23.7) * 0.23} F{new_filament_e_feedrate}
+G1 E{(flush_length_1 - 23.7) * 0.23} F{flush_volumetric_speeds[next_extruder]/2.4053*60}
 G1 E{(flush_length_1 - 23.7) * 0.02} F50
-G1 E{(flush_length_1 - 23.7) * 0.23} F{new_filament_e_feedrate}
+G1 E{(flush_length_1 - 23.7) * 0.23} F{flush_volumetric_speeds[next_extruder]/2.4053*60}
 {else}
-G1 E{flush_length_1} F{old_filament_e_feedrate}
+G1 E{flush_length_1} F{flush_volumetric_speeds[previous_extruder]/2.4053*60}
 {endif}
 ; FLUSH_END
 G1 E-[old_retract_length_toolchange] F1800
@@ -77,15 +91,15 @@ M106 P1 S0
 {if flush_length_2 > 1}
 M106 P1 S60
 ; FLUSH_START
-G1 E{flush_length_2 * 0.18} F{new_filament_e_feedrate}
+G1 E{flush_length_2 * 0.18} F{flush_volumetric_speeds[next_extruder]/2.4053*60}
 G1 E{flush_length_2 * 0.02} F50
-G1 E{flush_length_2 * 0.18} F{new_filament_e_feedrate}
+G1 E{flush_length_2 * 0.18} F{flush_volumetric_speeds[next_extruder]/2.4053*60}
 G1 E{flush_length_2 * 0.02} F50
-G1 E{flush_length_2 * 0.18} F{new_filament_e_feedrate}
+G1 E{flush_length_2 * 0.18} F{flush_volumetric_speeds[next_extruder]/2.4053*60}
 G1 E{flush_length_2 * 0.02} F50
-G1 E{flush_length_2 * 0.18} F{new_filament_e_feedrate}
+G1 E{flush_length_2 * 0.18} F{flush_volumetric_speeds[next_extruder]/2.4053*60}
 G1 E{flush_length_2 * 0.02} F50
-G1 E{flush_length_2 * 0.18} F{new_filament_e_feedrate}
+G1 E{flush_length_2 * 0.18} F{flush_volumetric_speeds[next_extruder]/2.4053*60}
 G1 E{flush_length_2 * 0.02} F50
 ; FLUSH_END
 G1 E-[new_retract_length_toolchange] F1800
@@ -110,15 +124,15 @@ M106 P1 S0
 {if flush_length_3 > 1}
 M106 P1 S60
 ; FLUSH_START
-G1 E{flush_length_3 * 0.18} F{new_filament_e_feedrate}
+G1 E{flush_length_3 * 0.18} F{flush_volumetric_speeds[next_extruder]/2.4053*60}
 G1 E{flush_length_3 * 0.02} F50
-G1 E{flush_length_3 * 0.18} F{new_filament_e_feedrate}
+G1 E{flush_length_3 * 0.18} F{flush_volumetric_speeds[next_extruder]/2.4053*60}
 G1 E{flush_length_3 * 0.02} F50
-G1 E{flush_length_3 * 0.18} F{new_filament_e_feedrate}
+G1 E{flush_length_3 * 0.18} F{flush_volumetric_speeds[next_extruder]/2.4053*60}
 G1 E{flush_length_3 * 0.02} F50
-G1 E{flush_length_3 * 0.18} F{new_filament_e_feedrate}
+G1 E{flush_length_3 * 0.18} F{flush_volumetric_speeds[next_extruder]/2.4053*60}
 G1 E{flush_length_3 * 0.02} F50
-G1 E{flush_length_3 * 0.18} F{new_filament_e_feedrate}
+G1 E{flush_length_3 * 0.18} F{flush_volumetric_speeds[next_extruder]/2.4053*60}
 G1 E{flush_length_3 * 0.02} F50
 ; FLUSH_END
 G1 E-[new_retract_length_toolchange] F1800
@@ -143,15 +157,15 @@ M106 P1 S0
 {if flush_length_4 > 1}
 M106 P1 S60
 ; FLUSH_START
-G1 E{flush_length_4 * 0.18} F{new_filament_e_feedrate}
+G1 E{flush_length_4 * 0.18} F{flush_volumetric_speeds[next_extruder]/2.4053*60}
 G1 E{flush_length_4 * 0.02} F50
-G1 E{flush_length_4 * 0.18} F{new_filament_e_feedrate}
+G1 E{flush_length_4 * 0.18} F{flush_volumetric_speeds[next_extruder]/2.4053*60}
 G1 E{flush_length_4 * 0.02} F50
-G1 E{flush_length_4 * 0.18} F{new_filament_e_feedrate}
+G1 E{flush_length_4 * 0.18} F{flush_volumetric_speeds[next_extruder]/2.4053*60}
 G1 E{flush_length_4 * 0.02} F50
-G1 E{flush_length_4 * 0.18} F{new_filament_e_feedrate}
+G1 E{flush_length_4 * 0.18} F{flush_volumetric_speeds[next_extruder]/2.4053*60}
 G1 E{flush_length_4 * 0.02} F50
-G1 E{flush_length_4 * 0.18} F{new_filament_e_feedrate}
+G1 E{flush_length_4 * 0.18} F{flush_volumetric_speeds[next_extruder]/2.4053*60}
 G1 E{flush_length_4 * 0.02} F50
 ; FLUSH_END
 {endif}
@@ -161,7 +175,7 @@ M629
 M400
 M106 P1 S60
 M109 S[new_filament_temp]
-G1 E5 F{new_filament_e_feedrate} ;Compensate for filament spillage during waiting temperature
+G1 E5 F{flush_volumetric_speeds[next_extruder]/2.4053*60} ;Compensate for filament spillage during waiting temperature
 M400
 G92 E0
 G1 E-[new_retract_length_toolchange] F1800
@@ -187,14 +201,15 @@ M204 S[default_acceleration]
 {else}
 G1 X[x_after_toolchange] Y[y_after_toolchange] Z[z_after_toolchange] F12000
 {endif}
-M621 S[next_extruder]A
-
 
 M622.1 S0
-
 M9833 F{outer_wall_volumetric_speed/2.4} A0.3 ; cali dynamic extrusion compensation
 M1002 judge_flag filament_need_cali_flag
 M622 J1
+  G92 E0
+  G1 E-[new_retract_length_toolchange] F1800
+  M400
+  
   M106 P1 S178
   M400 S7
   G1 X0 F18000
@@ -208,6 +223,7 @@ M622 J1
   M106 P1 S0 
 M623
 
+M621 S[next_extruder]A
 G392 S0
-M1007 S1
 
+M1007 S1

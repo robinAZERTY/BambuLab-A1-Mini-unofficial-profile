@@ -1,12 +1,58 @@
 ;PART 6/6
 ;===== extrude cali test ===============================
 M1002 gcode_claim_action : 2
+M1002 set_filament_type:{filament_type[initial_no_support_extruder]}
 M104 S170;begin nozzle preheat
 M140 S[bed_temperature_initial_layer_single];set bed temp
 M1002 gcode_claim_action : 13
 M982.2 S1 ; turn on cog noise reduction
 M975 S1 ; turn on vibration supression
 G28 T300;home
+
+M620 M ;enable remap
+M620 S[initial_no_support_extruder]A   ; switch material if AMS exist
+    G392 S0 ;turn on clog detect
+    M1002 gcode_claim_action : 4
+    M400
+    M1002 set_filament_type:UNKNOWN
+    M109 S[nozzle_temperature_initial_layer]
+    M104 S250
+    M400
+    T[initial_no_support_extruder]
+    G1 X-13.5 F3000
+    M400
+    M620.1 E F{flush_volumetric_speeds[initial_no_support_extruder]/2.4053*60} T{flush_temperatures[initial_no_support_extruder]}
+    M109 S250 ;set nozzle to common flush temp
+    M106 P1 S0
+    G92 E0
+    G1 E50 F200
+    M400
+    M1002 set_filament_type:{filament_type[initial_no_support_extruder]}
+    M104 S{flush_temperatures[initial_no_support_extruder]}
+    G92 E0
+    G1 E50 F{flush_volumetric_speeds[initial_no_support_extruder]/2.4053*60}
+    M400
+    M106 P1 S178
+    G92 E0
+    G1 E5 F{flush_volumetric_speeds[initial_no_support_extruder]/2.4053*60}
+    M109 S{nozzle_temperature_initial_layer[initial_no_support_extruder]-20} ; drop nozzle temp, make filament shink a bit
+    M104 S{nozzle_temperature_initial_layer[initial_no_support_extruder]-40}
+    G92 E0
+    G1 E-0.5 F300
+
+    G1 X0 F30000
+    G1 X-13.5 F3000
+    G1 X0 F30000 ;wipe and shake
+    G1 X-13.5 F3000
+    G1 X0 F12000 ;wipe and shake
+    G1 X0 F30000
+    G1 X-13.5 F3000
+    M109 S{nozzle_temperature_initial_layer[initial_no_support_extruder]-40}
+    G392 S0 ;turn off clog detect
+M621 S[initial_no_support_extruder]A
+
+M400
+M106 P1 S0
 
 ;===== wipe nozzle ===============================
 M1002 gcode_claim_action : 14
@@ -98,9 +144,11 @@ G0 X90 Y90 F3000
 G28 Z P0 T300; home z
 ;G1 E2 F500 ; Undo retraction
 
-
+;===== extrude cali test ===============================
+M104 S{nozzle_temperature_initial_layer[initial_extruder]}
 G90
 M83
+G0 X68 Y-2.5 F30000
 G0 Z0.2 F18000 ;Move to start position
 G1 E1 F500
 G0 X88 E10  F{outer_wall_volumetric_speed/(24/20)    * 60}
