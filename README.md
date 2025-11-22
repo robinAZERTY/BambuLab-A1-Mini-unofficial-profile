@@ -10,7 +10,11 @@ In addition, I would like to show that you can print multiple colors without AMS
 - A1 Mini without AMS, with some minor accessories prints :
 <img src="doc/hardware%20view%201.jpg" alt="hardware_view_1" width="400"/>
 
-- BambuStudio
+- BambuStudio version v02.04.00.70-20251118194119
+- Printer firmware version v01.07.00.00
+
+> ⚠️ Using a different version of BambuStudio or printer firmware may impact the behavior of the provided G-code and could lead to unexpected results.
+
 
 ## 📝 Steps
 Changes to made are only in the slicer, in the user's presets, in start, end, and filament change G-code. You can use the rest of the settings as you wish.
